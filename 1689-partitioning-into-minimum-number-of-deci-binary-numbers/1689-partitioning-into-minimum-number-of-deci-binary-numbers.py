@@ -7,7 +7,7 @@ class Solution:
         if n is single digit or <=9
         example n=8
         we will have to add 8 1's to get 8 
-        so for single sigit our answer will be 8 
+        so for single digit our answer will be that digit 
         
         if number > 9 or multi digit 
         
