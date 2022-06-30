@@ -1,10 +1,7 @@
 class Solution:
     def minMoves(self, nums: List[int]) -> int:
-        minVal=min(nums)
-        
-        ans=0
-        for num in nums:
-            ans+=num-minVal
-        
-        return ans
-        
+        #x*n = initialSum + (n-1)*m 
+        #x= min+m
+        #min*n + m*n = initialSum + m*n-m
+        #m=initialSum - min*n 
+        return sum(nums) - min(nums)*len(nums)
