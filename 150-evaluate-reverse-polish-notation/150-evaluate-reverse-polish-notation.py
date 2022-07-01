@@ -1,31 +1,31 @@
 class Solution:
-    def isOperator(self,token):
-        operators={"+","-","*","/"}
-        return token in operators
-
+    def operate(self,a,b,token):
+        if token == "/":
+            return int(b / a)
+        elif token == "*":
+            return a * b
+        elif token == "+":
+            return a + b
+        elif token == "-":
+            return b - a
     
-    def evaluate(self,num1,num2,op):
-        if op=="+":
-            return num1+num2
-        elif op=="-":
-            return num1-num2
-        elif op=="*":
-            return num1*num2
-        else:
-            return int(num1/num2)
-    
+    def isSymbol(self,token):
+        tokens = {"/","+","-","*"}
+        return token in tokens
+            
     def evalRPN(self, tokens: List[str]) -> int:
-        stack=[]
+        
+        stack = []
         
         for token in tokens:
-            if self.isOperator(token):
-                num2=stack.pop()
-                num1=stack.pop()
-                res=self.evaluate(num1,num2,token)
-                stack.append(res)
+            
+            if self.isSymbol(token):
+                a = stack.pop()
+                b = stack.pop()
+                c = self.operate(a,b,token)
+                stack.append(c)
+                
             else:
                 stack.append(int(token))
-        
+                
         return stack[0]
-            
-        
