@@ -17,7 +17,7 @@ class Solution:
         s1Res=False
         s2Res=False
         
-        key=(s1Idx,s2Idx,s3Idx)
+        key=(s1Idx,s2Idx)
         
         if key in self.mp:
             return self.mp[key]
