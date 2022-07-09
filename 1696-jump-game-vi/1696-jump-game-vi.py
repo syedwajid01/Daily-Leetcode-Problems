@@ -1,22 +1,30 @@
 from heapq import *
 class Solution:
     def maxResult(self, nums: List[int], k: int) -> int:
-        #dp[i]=maxSum ending at i 
-        n=len(nums)
-        dp=[-1]*n
-        dp[0]=nums[0]        
-        #dp[i] = nums[i] + maxDp we found previously till i-k index (becuase we can only come here with k jumps)
+        if len(nums)==1:
+            return nums[0]
+        if k==1:
+            return sum(nums)
         
-        heap=[]
-        heappush(heap,(-dp[0],0))
+        n=len(nums)
+        dq=deque([[nums[0],0]])
         
         for i in range(1,n):
-            while heap and heap[0][1]<i-k:
-                heappop(heap)
-            dp[i]=nums[i]+ (-1*heap[0][0])
-            heappush(heap,(-dp[i],i))
+            while dq and dq[0][1]<i-k:
+                dq.popleft()
+            
+            maxSumEndingAtI=nums[i]+dq[0][0]
+            
+            while dq and dq[-1][0]<maxSumEndingAtI:
+                dq.pop()
+            
+            dq.append([maxSumEndingAtI,i])
         
-        return dp[-1]
+        return dq[-1][0]
+                
+            
+            
+       
         
         
         
