@@ -1,22 +1,22 @@
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
-        used=[False]*len(nums)
         self.ans=[]
-        self.getAllPermute(nums,[],used)
+        self.getAllPermute(0,nums)
         return self.ans
         
     
-    def getAllPermute(self,nums,curr,used):
-        if len(curr)==len(nums):
-            self.ans.append(curr[:])
+    def getAllPermute(self,idx,nums):
+        if idx==len(nums):
+            self.ans.append(nums[:])
             return 
         
-        for i in range(len(nums)):
-            if not used[i]:
-                curr.append(nums[i])
-                used[i]=True
-                self.getAllPermute(nums,curr,used)
-                used[i]=False
-                curr.pop()
+        for j in range(idx,len(nums)):
+            self.swap(idx,j,nums)
+            self.getAllPermute(idx+1,nums)
+            self.swap(idx,j,nums)
     
+    
+    def swap(self,i,j,nums):
+        nums[i],nums[j]=nums[j],nums[i]
+            
         
