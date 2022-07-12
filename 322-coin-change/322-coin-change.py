@@ -18,23 +18,23 @@ class Solution:
         n=len(coins)
         dp=[[-1 for i in range(amount+1)] for j in range(n+1)]
         
-        def getMinCoins(coins,amount,n):
-            if amount==0:
-                return 0
-            if n==0:
-                return float("inf")
-            if dp[n][amount]!=-1:
-                return dp[n][amount]
-            #we have two options 
-            #select this coin
-            if coins[n-1]<=amount:
-                dp[n][amount] = min(1+getMinCoins(coins,amount-coins[n-1],n),getMinCoins(coins,amount,n-1))
-            else:
-                dp[n][amount] = getMinCoins(coins,amount,n-1)
-            
-            return dp[n][amount]
+        #if amount ==0 then num of coins =0
+        for i in range(n+1):
+            dp[i][0]=0
         
-        ans= getMinCoins(coins,amount,n)
+        #if n==0 and amount>0 then coins= float("inf")
+        for i in range(1,amount+1):
+            dp[0][i]=float("inf")
         
+        for i in range(1,n+1):
+            for j in range(1,amount+1):
+                if coins[i-1]<=j:
+                    dp[i][j]=min(1+dp[i][j-coins[i-1]],dp[i-1][j])
+                else:
+                    dp[i][j]=dp[i-1][j]
+        
+        ans=dp[n][amount]
         return ans if ans!=float("inf") else -1
+        
+      
         
