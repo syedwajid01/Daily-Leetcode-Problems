@@ -20,15 +20,9 @@ class Solution:
                 greaterThanX=greaterThanX.next
             curr=curr.next
         
-        #if there is atleast one node less than X 
-        #join lessThanX and greaterThanX lists 
-        if lessThanX!=lessThanXHead:
-            lessThanX.next=greaterThanXHead.next
-        else:
-            #if there is no node less than x then simply return head
-            return head
         
-        #make end of second list as None 
         greaterThanX.next=None
+        
+        lessThanX.next=greaterThanXHead.next
         
         return lessThanXHead.next
