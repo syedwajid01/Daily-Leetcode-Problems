@@ -4,15 +4,15 @@ class Solution:
         if len(s)!=len(t):
             return False
         
-        tmap=[0]*26
-        smap=[0]*26
+        count=[0]*26
+
         
         for i in range(len(s)):
-            tmap[ord(t[i])-ord("a")]+=1
-            smap[ord(s[i])-ord("a")]+=1
+            count[ord(t[i])-ord("a")]+=1
+            count[ord(s[i])-ord("a")]-=1
         
         for i in range(26):
-            if tmap[i]!=smap[i]:
+            if count[i]!=0:
                 return False
         
         return True
