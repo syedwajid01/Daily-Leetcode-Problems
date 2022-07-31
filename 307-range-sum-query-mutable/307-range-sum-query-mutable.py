@@ -1,63 +1,65 @@
 class NumArray:
 
     def __init__(self, nums: List[int]):
+        self.nums=nums
         self.n=len(nums)
-        self.arr=nums
         n=self.n
-        powerOf2=1
-        space=0
+        powersOf2=1
+        space=n
         for i in range(n):
-            powerOf2*=2
-            if powerOf2>=(2*n-1):
-                space=powerOf2
+            powersOf2*=2
+            if powersOf2>=(2*n-1):
+                space=powersOf2
                 break
-       
-        self.segmentTree=[0]*(space)
-        self.constructSegmentTree(self.segmentTree,nums,0,0,self.n-1)
         
-    def constructSegmentTree(self,segmentTree,arr,index,left,right):
+        self.segmentTree=[0 for _ in range(space)]
+        self.buildSegmentTree(self.segmentTree,0,0,n-1)
+    
+    def buildSegmentTree(self,st,index,left,right):
         if left==right:
-            segmentTree[index]=arr[left]
-            return arr[left]
+            st[index]=self.nums[left]
+            return self.nums[left]
+        
         mid=(left+right)//2
-        leftPartitionSum=self.constructSegmentTree(segmentTree,arr,2*index+1,left,mid)
-        rightPartitionSum=self.constructSegmentTree(segmentTree,arr,2*index+2,mid+1,right)
-        segmentTree[index]=leftPartitionSum+rightPartitionSum
-        return segmentTree[index]
+        leftSum=self.buildSegmentTree(st,2*index+1,left,mid)
+        rightSum=self.buildSegmentTree(st,2*index+2,mid+1,right)
+        st[index]=leftSum+rightSum
+        return st[index]
+        
+        
 
     def update(self, index: int, val: int) -> None:
-        diff=val-self.arr[index]
-        self.arr[index]=val
-        self.updateSegmentTree(self.segmentTree,0,0,self.n-1,index,diff)
+        difference=val-self.nums[index]
+        self.nums[index]=val
+        self.updateSegTree(self.segmentTree,0,0,self.n-1,index,difference)
     
-    
-    def updateSegmentTree(self,segmentTree,stIndex,left,right,position,diff):
-        if not left<=position<=right:
-            return
-        segmentTree[stIndex]+=diff
-        if left!=right:
-            mid=(left+right)//2
-            self.updateSegmentTree(segmentTree,2*stIndex+1,left,mid,position,diff)
-            self.updateSegmentTree(segmentTree,2*stIndex+2,mid+1,right,position,diff)
-        
+    def updateSegTree(self,st,index,stLeft,stRight,pos,diff):
+        if pos < stLeft or pos > stRight:
+            return 
+        st[index]+=diff
+        if stLeft!=stRight:
+            mid=(stLeft+stRight)//2
+            self.updateSegTree(st,2*index+1,stLeft,mid,pos,diff)
+            self.updateSegTree(st,2*index+2,mid+1,stRight,pos,diff)
 
     def sumRange(self, left: int, right: int) -> int:
         return self.getSum(self.segmentTree,0,0,self.n-1,left,right)
     
-    def getSum(self,segmentTree,stIndex,segmentTreeleft,segmentTreeright,l,r):
-        #total overlap
-        if segmentTreeleft>=l and r>=segmentTreeright:
-            return segmentTree[stIndex]
+    
+    def getSum(self,st,index,stLeft,stRight,left,right):
+        #total overlap 
+        if stLeft>=left and stRight<=right:
+            return st[index]
         
-        #No overlap
-        if r<segmentTreeleft or l>segmentTreeright:
+        #no overlap 
+        if stRight<left or stLeft>right:
             return 0
         
-        #partial overlap
-        mid=(segmentTreeleft+segmentTreeright)//2
-        leftPartitionSum=self.getSum(segmentTree,2*stIndex+1,segmentTreeleft,mid,l,r)
-        rightPartitionSum=self.getSum(segmentTree,2*stIndex+2,mid+1,segmentTreeright,l,r)
-        return leftPartitionSum+rightPartitionSum
+        #partial overlap 
+        mid=(stLeft+stRight)//2
+        return self.getSum(st,2*index+1,stLeft,mid,left,right) + self.getSum(st,2*index+2,mid+1,stRight,left,right)
+        
+        
 
 
 # Your NumArray object will be instantiated and called as such:
