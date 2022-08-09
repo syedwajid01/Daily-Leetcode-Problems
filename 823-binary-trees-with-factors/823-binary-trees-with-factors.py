@@ -21,8 +21,6 @@ class Solution:
                     if right in index:
                         dp[i]=dp[i]+(dp[j]*dp[index[right]])
                 
-        
-        print(dp)
         return sum(dp)%(10**9+7)
                         
         
