@@ -5,17 +5,17 @@ class Solution:
         #heap interval = [end,length,start]
         for num in nums:
             while heap and heap[0][0]+1<num:
-                _,length,_=heappop(heap)
+                _,length=heappop(heap)
                 if length<3:
                     return False
             if len(heap)==0 or (heap and heap[0][0]==num):
-                heappush(heap,[num,1,num])
+                heappush(heap,[num,1])
             else:
-                end,length,start=heappop(heap)
-                heappush(heap,[num,length+1,start])
+                end,length=heappop(heap)
+                heappush(heap,[num,length+1])
         
         while heap:
-            _,length,_=heappop(heap)
+            _,length=heappop(heap)
             if length<3:
                 return False
         
