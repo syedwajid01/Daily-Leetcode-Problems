@@ -1,22 +1,18 @@
+from heapq import *
 class Solution:
     def diagonalSort(self, mat: List[List[int]]) -> List[List[int]]:
-        #insertion sort 
-        
         row,col=len(mat),len(mat[0])
+        mp=collections.defaultdict(list)
         
-        for i in range(1,row):
-            for j in range(1,col):
-                currNum=mat[i][j]
-                
-                r,c=i-1,j-1
-                
-                while 0<=r<row and 0<=c<col and currNum<mat[r][c]:
-                    mat[r+1][c+1]=mat[r][c]
-                    r-=1
-                    c-=1
-                
-                mat[r+1][c+1]=currNum
+        for i in range(row):
+            for j in range(col):
+                heappush(mp[i-j],mat[i][j])
         
+        for i in range(row):
+            for j in range(col):
+                mat[i][j]=heappop(mp[i-j])
+                
+    
         return mat
                 
         
